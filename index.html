@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Sky13 by wangfakang</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Sky13</h1>
+        <p class="header">nginx reload 过程</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/wangfakang/sky13/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/wangfakang/sky13/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/wangfakang/sky13">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/wangfakang">wangfakang</a></p>
+
+
+      </header>
+      <section>
+        <p><code>nginx -s reload对性能的影响</code>    </p>
+
+<h1>
+<a id="一nginx-reload的过程" class="anchor" href="#%E4%B8%80nginx-reload%E7%9A%84%E8%BF%87%E7%A8%8B" aria-hidden="true"><span class="octicon octicon-link"></span></a>一.nginx reload的过程:</h1>
+
+<p>首先是nginx执行这样一个命令其nginx的内部hi如何做饿恩?其整个过程是这样的------首先nginx master进程收到该信号
+的时候就会通知worker子进程,让其不在listen fd[即旧的worker进程不在接受新饿连接请求],然后fork新worker子进程然
+后进行读取配置文件饿内容进行初始化新的worker进程.</p>
+
+<h1>
+<a id="二注意其实在执行nginx--s-reload会有这样几个问题---" class="anchor" href="#%E4%BA%8C%E6%B3%A8%E6%84%8F%E5%85%B6%E5%AE%9E%E5%9C%A8%E6%89%A7%E8%A1%8Cnginx--s-reload%E4%BC%9A%E6%9C%89%E8%BF%99%E6%A0%B7%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98---" aria-hidden="true"><span class="octicon octicon-link"></span></a>二.注意其实在执行nginx -s reload会有这样几个问题:   </h1>
+
+<h2>
+<a id="1若有大量请求此时会丢请求" class="anchor" href="#1%E8%8B%A5%E6%9C%89%E5%A4%A7%E9%87%8F%E8%AF%B7%E6%B1%82%E6%AD%A4%E6%97%B6%E4%BC%9A%E4%B8%A2%E8%AF%B7%E6%B1%82" aria-hidden="true"><span class="octicon octicon-link"></span></a>1.若有大量请求,此时会丢请求.</h2>
+
+<ul>
+<li>原因是,在上面介绍的reload的过程中说旧的worker子进程此时不接受新的连接请求,但是若果在新饿子进程产生的那一刻
+有很多的请求饿时候则会导致请求丢失.<br>
+</li>
+</ul>
+
+<h2>
+<a id="2若此时worker子进程比较多则会很耗费内存" class="anchor" href="#2%E8%8B%A5%E6%AD%A4%E6%97%B6worker%E5%AD%90%E8%BF%9B%E7%A8%8B%E6%AF%94%E8%BE%83%E5%A4%9A%E5%88%99%E4%BC%9A%E5%BE%88%E8%80%97%E8%B4%B9%E5%86%85%E5%AD%98" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.若此时worker子进程比较多则会很耗费内存.</h2>
+
+<ul>
+<li>由于老的worker子进程要把当前的请求饿任务处理完成才会释放worker进程的资源,所以若果老的worker和后端的机器
+keepalive什么的话则在一段时间内nginx的worker进程个数会随着reload的次数成倍数增加.<br>
+</li>
+</ul>
+
+<p>代码分析后续补上~      </p>
+
+<h1>
+<a id="欢迎一起交流学习-" class="anchor" href="#%E6%AC%A2%E8%BF%8E%E4%B8%80%E8%B5%B7%E4%BA%A4%E6%B5%81%E5%AD%A6%E4%B9%A0-" aria-hidden="true"><span class="octicon octicon-link"></span></a>欢迎一起交流学习 </h1>
+
+<p>在使用中有任何问题，欢迎反馈给我，可以用以下联系方式跟我交流</p>
+
+<ul>
+<li>邮件(1031379296#qq.com, 把#换成@)</li>
+<li>QQ: 1031379296</li>
+<li>weibo: <a href="http://weibo.com/u/2786211992/home">@王发康</a>
+</li>
+</ul>
+
+<h1>
+<a id="thx" class="anchor" href="#thx" aria-hidden="true"><span class="octicon octicon-link"></span></a>Thx</h1>
+
+<ul>
+<li>chunshengsterATgmail.com</li>
+</ul>
+
+<h1>
+<a id="author" class="anchor" href="#author" aria-hidden="true"><span class="octicon octicon-link"></span></a>Author</h1>
+
+<ul>
+<li>Linux\nginx\golang\c\c++爱好者</li>
+<li>欢迎一起交流  一起学习# </li>
+<li>Others say good and Others good</li>
+</ul>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		          <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("nginx reload 的过程 性能的影响");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
