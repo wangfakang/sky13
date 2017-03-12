@@ -2,10 +2,8 @@
 
 一.nginx reload的过程:
 =====
-   首先是nginx执行这样一个命令其nginx的内部hi如何做的恩?其整个过程是这样的------首先fork新worker子进程进行读取配
-置文件内容进行初始化新的worker进程.然后nginx master进程就会通知worker子进程,让其不在listen fd[即
-旧的worker进程不在接受新的连接请求].    
-
+   首先是nginx执行这样一个命令其nginx的内部是如何做的恩?其整个过程是这样的------首先会新起一个nginxmaster进程、然后进行配置的预校验、如果配置上是没有语法错误（像端口冲突啥的是无法检测的）就会给之前的master进程发送信号、然后老的master进行配置解析、fork出新的worker进程（待新起来的进程准备工作就绪、此时master进程就会通知老的worker进程关闭相关监听套接字，即不在介绍新的请求、待老的worker上的各种事件处理完成后就退出）；
+   
 二.注意其实在执行nginx -s reload会有这样几个问题:   
 =====
  
