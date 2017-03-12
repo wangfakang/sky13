@@ -1,0 +1,8 @@
+title: Sky13
+description: nginx reload 过程
+google_analytics: nginx reload 的过程 性能的影响
+show_downloads: true
+theme: jekyll-theme-dinky
+
+gems:
+  - jekyll-mentions
